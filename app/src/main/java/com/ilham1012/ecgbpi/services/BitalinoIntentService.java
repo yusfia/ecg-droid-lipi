@@ -80,7 +80,7 @@ public class BitalinoIntentService extends IntentService {
         SharedPreferences SP = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
         String mac = "98:D3:31:90:3E:00";
         //String mac = "98:D3:31:B2:BB:7D";
-        String strBluetoothDevice = mac;//SP.getString("bluetooth", mac);
+        String strBluetoothDevice = SP.getString("bluetooth", mac); //mac;//
 
         final String remoteDevice = strBluetoothDevice;
 
@@ -138,10 +138,11 @@ public class BitalinoIntentService extends IntentService {
 
                 for (BITalinoFrame frame : frames) {
                     //buffer[counter] untuk keperluan pengolahan data
-                    buffer[counter] = frame.getAnalog(selChannels[0]);
+                    double mV = convertmVolt(frame.getAnalog(selChannels[0]));
+                    buffer[counter] = mV;
 
                     //bufmin untuk keperluan tampilan dan penyimpanan
-                    int buffmin = frame.getAnalog(selChannels[0]);
+                    double buffmin = mV;
 
                     Intent broadcasterIntent = new Intent();
                     //temp = temp + buffmin + ",";
@@ -219,5 +220,16 @@ public class BitalinoIntentService extends IntentService {
         }
         Log.i(TAG, "External Media: readable="
                 + mExternalStorageAvailable + " writable=" + mExternalStorageWriteable);
+    }
+
+    double Vcc = 3.3;
+    int n = 10;
+    double powN = Math.pow(2, n);
+    int GECG = 1100;
+
+    private double convertmVolt(int ECGB){
+        double ECGV;
+        ECGV = ((((ECGB/powN)-0.5)*Vcc)/GECG);
+        return  ECGV * 1000;
     }
 }

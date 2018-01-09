@@ -42,7 +42,7 @@ public class FileWriterECG {
         }
     }
 
-    public void writeDataToFile(int data) {
+    public void writeDataToFile(double data) {
         pw.print(data + ",");
     }
 

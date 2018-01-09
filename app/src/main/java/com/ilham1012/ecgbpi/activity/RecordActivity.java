@@ -129,7 +129,7 @@ public class RecordActivity extends RoboActivity implements ServiceConnection {
     private BroadcastReceiver receiverBitValue = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
-            int val = intent.getIntExtra(Constants.BITALINO_SGLVALUE, 0);
+            double val = intent.getDoubleExtra(Constants.BITALINO_SGLVALUE, 0);
             if (isWaiting) {
                 isWaiting = false;
                 tvLog.setText("Recording process...");
@@ -172,7 +172,7 @@ public class RecordActivity extends RoboActivity implements ServiceConnection {
         rawChart.setData(data);
     }
 
-    private void addEntry(int newdata) {
+    private void addEntry(double newdata) {
         int GRAPH_WIDTH = 1000;
         LineData data = rawChart.getData();
 
